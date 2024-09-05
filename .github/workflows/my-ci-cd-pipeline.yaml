@@ -2,6 +2,11 @@ name: CI/CD Pipeline 2
 
 on:
   workflow_dispatch:
+  inputs:
+        skip-push:
+          type: boolean
+          description: Skip push and only build
+          default: false
 
 jobs:
   lint-and-test:
@@ -45,5 +50,8 @@ jobs:
       - name: Build docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/github-action-school .
       - name: Push to Dockerhub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/github-action-school
-  
+          if: ${{ !inputs.skip-push }}
+          run: docker push ${{ secrets.DOCKER_USERNAME }}/github-action-school
+      - name: Skip push to Dockerhub
+          if: ${{ inputs.skip-push }}
+          run: exit 1

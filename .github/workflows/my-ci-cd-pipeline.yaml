@@ -2,7 +2,7 @@ name: CI/CD Pipeline 2
 
 on:
   workflow_dispatch:
-  inputs:
+    inputs:
         skip-push:
           type: boolean
           description: Skip push and only build
